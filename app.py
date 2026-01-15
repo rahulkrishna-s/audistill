@@ -19,6 +19,7 @@ audio_file = st.file_uploader("Upload Audio (MP3, WAV, M4A)", type=["mp3", "wav"
 if audio_file is not None:
     st.audio(audio_file)
 
+    # Transcription
     if st.button("Transcribe Audio"):
         with st.spinner("Transcribing with Groq Whisper..."):
             try:
@@ -37,3 +38,20 @@ if audio_file is not None:
 if st.session_state.transcript:
     st.markdown("### Raw Transcript")
     st.text_area("Transcript", st.session_state.transcript, height=300)
+
+    # Summary Generation
+    if st.button("Generate Summary & Notes"):
+        with st.spinner("Generating study notes..."):
+            try:
+                completion = client.chat.completions.create(
+                    model="llama-3.1-8b-instant", 
+                    messages=[
+                        {"role": "system", "content": "You are an expert student assistant. Summarize the following lecture into key study points."},
+                        {"role": "user", "content": st.session_state.transcript}
+                    ]
+                )
+                summary = completion.choices[0].message.content
+                st.markdown("### Study Notes")
+                st.write(summary)
+            except Exception as e:
+                st.error(f"Error generating summary: {e}")
