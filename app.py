@@ -11,7 +11,10 @@ except Exception:
 
 client = Groq(api_key=api_key)
 
-audio_file = st.file_uploader("Upload Audio (MP3, WAV, M4A)", type=["mp3", "wav", "m4a"])
+if "transcript" not in st.session_state:
+    st.session_state.transcript = None
+
+audio_file = st.file_uploader("Upload Audio (MP3, WAV, M4A)", type=["mp3", "wav", "m4a", "ogg"])
 
 if audio_file is not None:
     st.audio(audio_file)
@@ -24,10 +27,13 @@ if audio_file is not None:
                     model="whisper-large-v3", 
                     response_format="json"
                 )
-                
+
+                st.session_state.transcript = transcription.text
                 st.success("Transcription Successful!")
-                st.markdown("### Raw Transcript")
-                st.text_area("Transcript", transcription.text, height=300)
                 
             except Exception as e:
                 st.error(f"Error: {e}")
+
+if st.session_state.transcript:
+    st.markdown("### Raw Transcript")
+    st.text_area("Transcript", st.session_state.transcript, height=300)
