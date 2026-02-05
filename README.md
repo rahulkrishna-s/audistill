@@ -1,6 +1,8 @@
 # Audistill - AI Lecture Assistant
 
->Transform lecture recordings into comprehensive study materials with AI-powered transcription, summarization, quizzes, and flashcards.
+> Transform lecture recordings into comprehensive study materials with AI-powered transcription, summarization, quizzes, and flashcards.
+
+**Live demo:** https://audistill.streamlit.app
 
 ## Overview
 Audistill is a GenAI powered study aid designed to help students convert raw lecture audio into structured study materials. By leveraging the **Groq Cloud API**, it offers near real time transcription and intelligent summarization.
